@@ -1,10 +1,12 @@
 "use server"
 
 import { ID, Query } from "node-appwrite"
-import { createAdminClient } from "../appwrite"
+import { createAdminClient, createSessionClient } from "../appwrite"
 import { appwriteConfig } from "../appwrite/config"
 import { parseStringify } from "../utils"
 import { cookies } from "next/headers"
+
+import { avatarPlaceholderUrl } from "@/constants"
 
 async function getUserByEmail(email: string) {
   const { databases } = await createAdminClient()
@@ -58,8 +60,7 @@ export const createAccount = async ({
       {
         fullName,
         email,
-        avatar:
-          "https://media.gettyimages.com/id/1997233757/pt/foto/user-icon-in-flat-style-group-of-erson-icon-user-icon-for-web-site-user-icon-vector.jpg?s=1024x1024&w=gi&k=20&c=KlcXCX4jlCkpxXm7nAUShzLgMLnsi-11mXiazgjklpk=",
+        avatar: avatarPlaceholderUrl,
         accountId,
       }
     )
@@ -91,4 +92,20 @@ export const verifySecret = async ({
     handleError(error, 'Failed to verify OTP')
   }
 
+}
+
+export const getCurrentUser = async () => {
+  const { account, databases } = await createSessionClient()
+
+  const result = await account.get()
+
+  const user = await databases.listDocuments(
+    appwriteConfig.databaseId,
+    appwriteConfig.usersCollectionId,
+    [Query.equal('accountId', result.$id)]
+  )
+
+  if (user.total <= 0) return null
+
+  return parseStringify(user.documents[0])
 }
