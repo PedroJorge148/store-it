@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input"
 
 import { createAccount } from "@/lib/actions/user.actions"
+import { OTPModal } from "./OTP-modal"
 
 
 
@@ -58,8 +59,6 @@ export default function AuthForm({ type }: { type: FormType }) {
       })
   
       setAccountId(user.accountId)
-
-      console.log('ok')
     } catch(error) {
       setErrorMessage('Failed to create account. Please try again.')
     } finally {
@@ -141,7 +140,7 @@ export default function AuthForm({ type }: { type: FormType }) {
           </div>
         </form>
       </Form>
-      {/* TODO: OTP Verification */}
+      {accountId && <OTPModal email={form.getValues('email')} accountId={accountId} />}
     </>
   )
 }
