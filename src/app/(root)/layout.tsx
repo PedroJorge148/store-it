@@ -17,7 +17,7 @@ export default async function DefaultLayout({
     <main className="flex h-screen">
       <Sidebar {...currentUser} />
       <section className="flex h-full flex-1 flex-col">
-        <MobileNav />
+        <MobileNav {...currentUser} />
         <Header />
 
         <div className="main-content">
