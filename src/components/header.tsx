@@ -1,13 +1,18 @@
-import Image from "next/image";
-import { Button } from "./ui/button";
-import { Search } from "./search";
-import { FileUploader } from "./file-uploader";
-import { signOutUser } from "@/lib/actions/user.actions";
+import Image from 'next/image'
+import { Button } from './ui/button'
+import { Search } from './search'
+import { FileUploader } from './file-uploader'
+import { signOutUser } from '@/lib/actions/user.actions'
 
-export function Header() {
+interface HeaderProps {
+  userId: string
+  accountId: string
+}
+
+export function Header({ userId, accountId }: HeaderProps) {
   async function handleSignOut() {
-      'use server'
-      await signOutUser();
+    'use server'
+    await signOutUser()
   }
 
   return (
@@ -15,9 +20,9 @@ export function Header() {
       <Search />
 
       <div className="header-wrapper">
-        <FileUploader />
+        <FileUploader ownerId={userId} accountId={accountId} />
 
-        <form action={signOutUser}>
+        <form action={handleSignOut}>
           <Button
             type="submit"
             className="sign-out-button"

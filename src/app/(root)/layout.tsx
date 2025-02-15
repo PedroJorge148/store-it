@@ -1,8 +1,10 @@
-import { Header } from "@/components/header";
-import { MobileNav } from "@/components/mobile-nav";
-import { Sidebar } from "@/components/sidebar";
-import { getCurrentUser } from "@/lib/actions/user.actions";
-import { redirect } from "next/navigation";
+import React from 'react'
+import { Header } from '@/components/header'
+import { MobileNav } from '@/components/mobile-nav'
+import { Sidebar } from '@/components/sidebar'
+import { Toaster } from '@/components/ui/toaster'
+import { getCurrentUser } from '@/lib/actions/user.actions'
+import { redirect } from 'next/navigation'
 
 export default async function DefaultLayout({
   children,
@@ -18,12 +20,13 @@ export default async function DefaultLayout({
       <Sidebar {...currentUser} />
       <section className="flex h-full flex-1 flex-col">
         <MobileNav {...currentUser} />
-        <Header />
+        <Header userId={currentUser.$id} accountId={currentUser.accountId} />
 
         <div className="main-content">
           {children}
         </div>
       </section>
+      <Toaster />
     </main>
   )
 }

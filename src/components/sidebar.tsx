@@ -1,12 +1,12 @@
-"use client"
+'use client'
 
-import { avatarPlaceholderUrl, navItems } from "@/constants"
-import { cn } from "@/lib/utils"
-import Image from "next/image"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { avatarPlaceholderUrl, navItems } from '@/constants'
+import { cn } from '@/lib/utils'
+import Image from 'next/image'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
-interface Props { 
+interface Props {
   fullName: string
   email: string
 }
@@ -40,8 +40,8 @@ export function Sidebar({ fullName, email }: Props) {
             <Link key={i} href={url} className="lg:w-full">
               <li
                 className={cn(
-                  "sidebar-nav-item",
-                  pathname === url && "shad-active"
+                  'sidebar-nav-item',
+                  pathname === url && 'shad-active',
                 )}
               >
                 <Image
@@ -51,8 +51,9 @@ export function Sidebar({ fullName, email }: Props) {
                   height={24}
                   className={cn(
                     'nav-icon',
-                    pathname === url && 'nav-icon-active'
-                  )} />
+                    pathname === url && 'nav-icon-active',
+                  )}
+                />
                 <p className="hidden lg:block">{name}</p>
               </li>
             </Link>

@@ -1,32 +1,34 @@
 'use client'
 
-import Image from "next/image";
-import { useState } from "react";
-import { cn } from "@/lib/utils";
-import { Link } from "lucide-react";
-import { usePathname } from "next/navigation";
+import Image from 'next/image'
+import { useState } from 'react'
+import { cn } from '@/lib/utils'
+import { Link } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 
 import {
   Sheet,
   SheetContent, SheetTitle,
-  SheetTrigger
-} from "@/components/ui/sheet";
-import { Separator } from "./ui/separator";
-import { navItems } from "@/constants";
-import { Button } from "./ui/button";
-import { FileUploader } from "./file-uploader";
-import { signOutUser } from "@/lib/actions/user.actions";
+  SheetTrigger,
+} from '@/components/ui/sheet'
+import { Separator } from './ui/separator'
+import { navItems } from '@/constants'
+import { Button } from './ui/button'
+import { FileUploader } from './file-uploader'
+import { signOutUser } from '@/lib/actions/user.actions'
 
 interface Props {
-  ownerId: string
+  $id: string
   accountId: string
   fullName: string
   email: string
   avatar: string
 }
 
-
-export function MobileNav({ ownerId, accountId, fullName, avatar, email }: Props) {
+export function MobileNav({
+  $id: ownerId, accountId,
+  fullName, avatar, email,
+}: Props) {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -71,8 +73,8 @@ export function MobileNav({ ownerId, accountId, fullName, avatar, email }: Props
                 <Link key={i} href={url} className="lg:w-full">
                   <li
                     className={cn(
-                      "mobile-nav-item",
-                      pathname === url && "shad-active"
+                      'mobile-nav-item',
+                      pathname === url && 'shad-active',
                     )}
                   >
                     <Image
@@ -82,8 +84,9 @@ export function MobileNav({ ownerId, accountId, fullName, avatar, email }: Props
                       height={24}
                       className={cn(
                         'nav-icon',
-                        pathname === url && 'nav-icon-active'
-                      )} />
+                        pathname === url && 'nav-icon-active',
+                      )}
+                    />
                     <p>{name}</p>
                   </li>
                 </Link>
@@ -94,7 +97,7 @@ export function MobileNav({ ownerId, accountId, fullName, avatar, email }: Props
           <Separator className="my-5 bg-light-200/20" />
 
           <div className="flex flex-col justify-between gap-5">
-            <FileUploader />
+            <FileUploader ownerId={ownerId} accountId={accountId} />
 
             <Button
               type="submit"

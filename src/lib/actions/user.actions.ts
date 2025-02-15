@@ -1,13 +1,13 @@
-"use server"
+'use server'
 
-import { ID, Query } from "node-appwrite"
-import { createAdminClient, createSessionClient } from "../appwrite"
-import { appwriteConfig } from "../appwrite/config"
-import { parseStringify } from "../utils"
-import { cookies } from "next/headers"
+import { ID, Query } from 'node-appwrite'
+import { createAdminClient, createSessionClient } from '../appwrite'
+import { appwriteConfig } from '../appwrite/config'
+import { parseStringify } from '../utils'
+import { cookies } from 'next/headers'
 
-import { avatarPlaceholderUrl } from "@/constants"
-import { redirect } from "next/navigation"
+import { avatarPlaceholderUrl } from '@/constants'
+import { redirect } from 'next/navigation'
 
 async function getUserByEmail(email: string) {
   const { databases } = await createAdminClient()
@@ -15,10 +15,12 @@ async function getUserByEmail(email: string) {
   const result = await databases.listDocuments(
     appwriteConfig.databaseId,
     appwriteConfig.usersCollectionId,
-    [Query.equal("email", [email])]
+    [Query.equal('email', [email])],
   )
 
-  return result.total > 0 ? result.documents[0] : null
+  return result.total > 0
+    ? result.documents[0]
+    : null
 }
 
 function handleError(error: unknown, message: string) {
@@ -34,7 +36,7 @@ export async function sendEmailOTP({ email }: { email: string }) {
 
     return session.userId
   } catch (error) {
-    handleError(error, "Failed to send email OTP")
+    handleError(error, 'Failed to send email OTP')
   }
 }
 
@@ -49,7 +51,7 @@ export const createAccount = async ({
 
   const accountId = await sendEmailOTP({ email })
 
-  if (!accountId) throw new Error("Failed to send an OTP")
+  if (!accountId) throw new Error('Failed to send an OTP')
 
   if (!existingUser) {
     const { databases } = await createAdminClient()
@@ -63,7 +65,7 @@ export const createAccount = async ({
         email,
         avatar: avatarPlaceholderUrl,
         accountId,
-      }
+      },
     )
   }
   return parseStringify({ accountId })
@@ -85,14 +87,13 @@ export const verifySecret = async ({
       path: '/',
       httpOnly: true,
       sameSite: 'strict',
-      secure: true
+      secure: true,
     })
 
     return parseStringify({ sessionId: session.$id })
   } catch (error) {
     handleError(error, 'Failed to verify OTP')
   }
-
 }
 
 export const getCurrentUser = async () => {
@@ -103,7 +104,7 @@ export const getCurrentUser = async () => {
   const user = await databases.listDocuments(
     appwriteConfig.databaseId,
     appwriteConfig.usersCollectionId,
-    [Query.equal('accountId', result.$id)]
+    [Query.equal('accountId', result.$id)],
   )
 
   if (user.total <= 0) return null
@@ -117,10 +118,10 @@ export const signInUser = async ({ email }: { email: string }) => {
 
     if (existingUser) {
       await sendEmailOTP({ email })
-      return parseStringify({accountId: existingUser.accountId })
+      return parseStringify({ accountId: existingUser.accountId })
     }
 
-    return parseStringify({ accountId: null, error: 'User not found'})
+    return parseStringify({ accountId: null, error: 'User not found' })
   } catch (error) {
     handleError(error, 'Failed to sign in')
   }
@@ -128,11 +129,11 @@ export const signInUser = async ({ email }: { email: string }) => {
 
 export const signOutUser = async () => {
   const { account } = await createSessionClient()
-  
+
   try {
     await account.deleteSession('current');
     (await cookies()).delete('appwrite-session')
-  } catch(error) {
+  } catch (error) {
     handleError(error, 'Failed to logout user')
   } finally {
     redirect('/sign-in')

@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
-import { z } from "zod"
-import Link from "next/link"
-import Image from "next/image"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { z } from 'zod'
+import Link from 'next/link'
+import Image from 'next/image'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "@/components/ui/button"
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
@@ -15,19 +15,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 
-import { createAccount, signInUser } from "@/lib/actions/user.actions"
-import { OTPModal } from "./OTP-modal"
+import { createAccount, signInUser } from '@/lib/actions/user.actions'
+import { OTPModal } from './OTP-modal'
 
-type FormType = "sign-in" | "sign-up"
+type FormType = 'sign-in' | 'sign-up'
 
 const authFormSchema = (formType: FormType) => {
   return z.object({
     email: z.string().email(),
     fullName:
-      formType === "sign-up"
+      formType === 'sign-up'
         ? z.string().min(2).max(50)
         : z.string().optional(),
   })
@@ -35,28 +35,28 @@ const authFormSchema = (formType: FormType) => {
 
 export default function AuthForm({ type }: { type: FormType }) {
   const [isLoading, setIsLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState('')
   const [accountId, setAccountId] = useState(null)
 
   const formSchema = authFormSchema(type)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: "",
-      email: "",
+      fullName: '',
+      email: '',
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true)
-    setErrorMessage("")
+    setErrorMessage('')
 
     try {
       let user = null
 
-      if (type === "sign-up") {
+      if (type === 'sign-up') {
         user = await createAccount({
-          fullName: values.fullName || "",
+          fullName: values.fullName || '',
           email: values.email,
         })
       } else {
@@ -65,7 +65,8 @@ export default function AuthForm({ type }: { type: FormType }) {
 
       setAccountId(user.accountId)
     } catch (error) {
-      setErrorMessage("Failed to create account. Please try again.")
+      console.error(error)
+      setErrorMessage('Failed to create account. Please try again.')
     } finally {
       setIsLoading(false)
     }
@@ -76,9 +77,11 @@ export default function AuthForm({ type }: { type: FormType }) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
           <h1 className="form-title">
-            {type === "sign-in" ? "Sign In" : "Sign up"}
+            {type === 'sign-in'
+              ? 'Sign In'
+              : 'Sign up'}
           </h1>
-          {type === "sign-up" && (
+          {type === 'sign-up' && (
             <FormField
               control={form.control}
               name="fullName"
@@ -126,7 +129,9 @@ export default function AuthForm({ type }: { type: FormType }) {
             className="form-submit-button"
             disabled={isLoading}
           >
-            {type === "sign-in" ? "Sign In" : "Sign Up"}
+            {type === 'sign-in'
+              ? 'Sign In'
+              : 'Sign Up'}
 
             {isLoading && (
               <Image
@@ -142,21 +147,25 @@ export default function AuthForm({ type }: { type: FormType }) {
 
           <div className="body-2 flex justify-center">
             <p className="text-light-100 ">
-              {type === "sign-in"
+              {type === 'sign-in'
                 ? "Don't have an account?"
-                : "Already have an account?"}
+                : 'Already have an account?'}
             </p>
             <Link
-              href={type === "sign-in" ? "/sign-up" : "/sign-in"}
+              href={type === 'sign-in'
+                ? '/sign-up'
+                : '/sign-in'}
               className="ml-1 font-medium text-brand"
             >
-              {type === "sign-in" ? "Sign Up" : "Sign In"}
+              {type === 'sign-in'
+                ? 'Sign Up'
+                : 'Sign In'}
             </Link>
           </div>
         </form>
       </Form>
       {accountId && (
-        <OTPModal email={form.getValues("email")} accountId={accountId} />
+        <OTPModal email={form.getValues('email')} accountId={accountId} />
       )}
     </>
   )

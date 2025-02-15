@@ -1,7 +1,7 @@
 'use client'
-import Image from "next/image"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import Image from 'next/image'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import {
   AlertDialog,
@@ -9,15 +9,15 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
-} from "@/components/ui/alert-dialog"
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import {
   InputOTP,
-  InputOTPGroup, InputOTPSlot
-} from "@/components/ui/input-otp"
-import { Button } from "./ui/button"
+  InputOTPGroup, InputOTPSlot,
+} from '@/components/ui/input-otp'
+import { Button } from './ui/button'
 
-import { sendEmailOTP, verifySecret } from "@/lib/actions/user.actions"
+import { sendEmailOTP, verifySecret } from '@/lib/actions/user.actions'
 
 interface OTPModalProps {
   email: string
