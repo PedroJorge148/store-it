@@ -10,7 +10,7 @@ declare interface ActionType {
 }
 
 declare interface SearchParamProps {
-  params?: Promise<unknown>;
+  params?: Promise<any>; // eslint-disable-line
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
