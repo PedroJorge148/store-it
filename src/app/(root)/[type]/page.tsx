@@ -1,4 +1,5 @@
 import { SearchParamProps } from '@/_types'
+import { Card } from '@/components/card'
 import { Sort } from '@/components/sort'
 import { getFiles } from '@/lib/actions/file.actions'
 import { Models } from 'node-appwrite'
@@ -29,9 +30,7 @@ export default async function Page({ params }: SearchParamProps) {
         ? (
           <section className="file-list">
             {files.documents.map((file: Models.Document) => (
-              <h1 key={file.$id} className="h1">
-                {file.title}
-              </h1>
+              <Card key={file.$id} file={file} />
             ))}
           </section>
           )
