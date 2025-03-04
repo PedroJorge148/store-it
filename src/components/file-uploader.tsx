@@ -102,7 +102,7 @@ export function FileUploader({ ownerId, accountId, className }: Props) {
 
                   <div className="preview-item-name">
                     {file.name}
-                    <Image
+                    <img
                       src="/assets/icons/file-loader.gif"
                       alt="loader"
                       width={80}

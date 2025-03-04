@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
-import { Link } from 'lucide-react'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import {
@@ -70,7 +70,10 @@ export function MobileNav({
           <nav className="mobile-nav">
             <ul className="moible-nav-list">
               {navItems.map(({ name, icon, url }, i) => (
-                <Link key={i} href={url} className="lg:w-full">
+                <Link
+                  key={i} href={url} className="lg:w-full"
+                  onClick={() => setIsOpen(false)}
+                >
                   <li
                     className={cn(
                       'mobile-nav-item',
@@ -97,7 +100,11 @@ export function MobileNav({
           <Separator className="my-5 bg-light-200/20" />
 
           <div className="flex flex-col justify-between gap-5">
-            <FileUploader ownerId={ownerId} accountId={accountId} />
+            <FileUploader
+              ownerId={ownerId}
+              accountId={accountId}
+              className="w-full"
+            />
 
             <Button
               type="submit"
