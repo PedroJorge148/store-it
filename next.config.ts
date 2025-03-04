@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'media.gettyimages.com',
+      },
+      {
+        protocol: 'https',
         hostname: 'img.freepik.com',
       },
       {
